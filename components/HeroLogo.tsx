@@ -8,9 +8,9 @@ export function HeroLogo() {
 
       <div className="medallion flex h-28 w-28 items-center justify-center overflow-hidden rounded-full shadow-gold-glow">
         <img
-          src="https://magenta-advisory-cardinal-566.mypinata.cloud/ipfs/bafybeidjzga3axioyma6xecfz2qu6mrsmn4gkqhtvej7kl4hbvwz3tppii"
+          src="https://magenta-advisory-cardinal-566.mypinata.cloud/ipfs/bafybeigftehawcozcui6rgynswu4qe22cao6xkaa4uhewsyvgeva5ezlym"
           alt="Thordex"
-          className="h-full w-full object-cover"
+          className="h-full w-full scale-[1.15] object-cover"
         />
       </div>
       <h1 className="mt-5 font-display text-2xl tracking-[0.08em] text-ivory">
