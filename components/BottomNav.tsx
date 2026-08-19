@@ -14,7 +14,7 @@ type NavItem = {
 
 const items: NavItem[] = [
   { key: "home", label: "Home", href: "/", icon: Home },
-  { key: "create-coin", label: "Create", icon: PlusCircle },
+  { key: "create-coin", label: "Create", href: "/create", icon: PlusCircle },
   { key: "nft", label: "NFT", icon: ImageIcon },
   { key: "wallet", label: "Wallet", icon: Wallet },
   { key: "liquidity", label: "Liquidity", icon: Droplets },
