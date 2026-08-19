@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
 import { pools, findToken, poolTvlTotal, myLiquidityTotal, type Pool } from "@/lib/pools";
 import { formatPrice } from "@/lib/format";
 import { KRYVORA_NETWORK } from "@/lib/network";
@@ -13,26 +12,16 @@ type Tab = "all" | "mine";
 export function LiquidityView() {
   const [tab, setTab] = useState<Tab>("all");
   const [activePool, setActivePool] = useState<Pool | null>(null);
-  const [newPosition, setNewPosition] = useState(false);
 
   const visiblePools = tab === "all" ? pools : pools.filter((p) => p.myLiquidityUsd);
 
   return (
     <div className="px-6 pb-4">
-      <div className="mt-2 flex items-start justify-between gap-3">
-        <div>
-          <h1 className="font-display text-2xl text-ivory">Liquidity</h1>
-          <p className="mt-1 text-sm text-sage">
-            Sediakan likuiditas di {KRYVORA_NETWORK.chainName} dan dapatkan bagian dari biaya swap
-          </p>
-        </div>
-        <button
-          onClick={() => setNewPosition(true)}
-          aria-label="Tambah posisi likuiditas baru"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-emerald-deep text-gold transition-colors hover:border-jade/50"
-        >
-          <Plus className="h-4 w-4" strokeWidth={2} />
-        </button>
+      <div className="mt-2">
+        <h1 className="font-display text-2xl text-ivory">Liquidity</h1>
+        <p className="mt-1 text-sm text-sage">
+          Sediakan likuiditas di {KRYVORA_NETWORK.chainName} dan dapatkan bagian dari biaya swap
+        </p>
       </div>
 
       {/* Statistik */}
@@ -49,6 +38,18 @@ export function LiquidityView() {
           <p className="text-[10px] uppercase tracking-wider text-sage">Posisi Saya</p>
           <p className="mt-1 font-display text-sm text-ivory">{formatPrice(myLiquidityTotal())}</p>
         </div>
+      </div>
+
+      {/* Tambah Likuiditas (menyatu langsung di halaman) */}
+      <div className="mt-5">
+        <AddLiquiditySheet
+          open
+          variant="inline"
+          tokenAId="native"
+          tokenBId="thor"
+          poolTvl={0}
+          onClose={() => {}}
+        />
       </div>
 
       {/* Tabs */}
@@ -75,7 +76,7 @@ export function LiquidityView() {
       <div className="mt-4">
         {visiblePools.length === 0 ? (
           <div className="rounded-2xl border border-gold/15 bg-surface px-4 py-8 text-center text-xs text-sage">
-            Anda belum punya posisi likuiditas. Ketuk tombol + untuk memulai.
+            Anda belum punya posisi likuiditas. Gunakan formulir Tambah Likuiditas di atas untuk memulai.
           </div>
         ) : (
           <div className="overflow-hidden rounded-2xl border border-gold/20">
@@ -125,16 +126,6 @@ export function LiquidityView() {
           tokenBId={activePool.tokenBId}
           poolTvl={activePool.tvl}
           onClose={() => setActivePool(null)}
-        />
-      )}
-
-      {newPosition && (
-        <AddLiquiditySheet
-          open
-          tokenAId="native"
-          tokenBId="thor"
-          poolTvl={0}
-          onClose={() => setNewPosition(false)}
         />
       )}
     </div>

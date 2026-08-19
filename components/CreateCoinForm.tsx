@@ -7,6 +7,7 @@ import { ensureKryvoraNetwork } from "@/lib/network";
 import { TOKEN_FACTORY_ADDRESS, TOKEN_FACTORY_ABI, KRYVORA_NETWORK } from "@/lib/contracts";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "@/lib/ipfs";
 import { TokenCreatedModal } from "./TokenCreatedModal";
+import { YourTokensPanel } from "./YourTokensPanel";
 
 const MAX_NAME = 32;
 const MAX_SYMBOL = 10;
@@ -65,8 +66,7 @@ export function CreateCoinForm() {
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
 
-  const [bannerOpen, setBannerOpen] = useState(true);
-  const [socialOpen, setSocialOpen] = useState(true);
+  const [socialOpen, setSocialOpen] = useState(false);
 
   const [telegram, setTelegram] = useState("");
   const [twitter, setTwitter] = useState("");
@@ -303,7 +303,6 @@ export function CreateCoinForm() {
             </button>
           ))}
         </div>
-        <p className="mt-1.5 text-[11px] text-sage">Semua supply dimint sekali ke wallet kamu saat token dibuat.</p>
       </div>
 
       {/* Token Image */}
@@ -360,44 +359,35 @@ export function CreateCoinForm() {
 
       {/* Add banner */}
       <div className="mt-6 overflow-hidden rounded-xl border border-gold/20 bg-surface">
-        <button
-          type="button"
-          onClick={() => setBannerOpen((v) => !v)}
-          className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
-        >
+        <div className="flex w-full items-center gap-3 px-4 py-3.5">
           <ImageIcon className="h-4 w-4 shrink-0 text-sage" strokeWidth={1.75} />
           <span className="flex-1 text-sm text-ivory">Add banner</span>
           <RequiredBadge />
-          <ChevronDown
-            className={`h-4 w-4 shrink-0 text-sage transition-transform ${bannerOpen ? "rotate-180" : ""}`}
+        </div>
+        <div className="border-t border-gold/10 px-4 pb-4 pt-3">
+          <input
+            ref={bannerInputRef}
+            type="file"
+            accept="image/png, image/jpeg"
+            className="hidden"
+            onChange={handleBannerChange}
           />
-        </button>
-        {bannerOpen && (
-          <div className="border-t border-gold/10 px-4 pb-4 pt-3">
-            <input
-              ref={bannerInputRef}
-              type="file"
-              accept="image/png, image/jpeg"
-              className="hidden"
-              onChange={handleBannerChange}
-            />
-            <button
-              type="button"
-              onClick={() => bannerInputRef.current?.click()}
-              className="flex aspect-[3/1] w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-dashed border-gold/30 text-sage transition-colors hover:border-jade/50"
-            >
-              {bannerPreview ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={bannerPreview} alt="Banner" className="h-full w-full object-cover" />
-              ) : (
-                <>
-                  <ImageIcon className="h-5 w-5" strokeWidth={1.5} />
-                  <span className="font-mono text-[11px]">3:1 — PNG, JPG</span>
-                </>
-              )}
-            </button>
-          </div>
-        )}
+          <button
+            type="button"
+            onClick={() => bannerInputRef.current?.click()}
+            className="flex aspect-[3/1] w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-dashed border-gold/30 text-sage transition-colors hover:border-jade/50"
+          >
+            {bannerPreview ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={bannerPreview} alt="Banner" className="h-full w-full object-cover" />
+            ) : (
+              <>
+                <ImageIcon className="h-5 w-5" strokeWidth={1.5} />
+                <span className="font-mono text-[11px]">3:1 — PNG, JPG</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Add social links */}
@@ -466,6 +456,9 @@ export function CreateCoinForm() {
         Deploys on Kryvora Network • Takes a few seconds
         {creationFee ? ` • Fee: ${creationFee} ETH` : ""}
       </p>
+
+      {/* Your Token — daftar token yang sudah dideploy oleh wallet yang terkoneksi */}
+      <YourTokensPanel />
 
       <TokenCreatedModal
         open={showSuccess}

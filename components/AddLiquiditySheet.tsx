@@ -25,12 +25,14 @@ export function AddLiquiditySheet({
   tokenBId,
   poolTvl,
   onClose,
+  variant = "modal",
 }: {
   open: boolean;
   tokenAId: string;
   tokenBId: string;
   poolTvl: number;
   onClose: () => void;
+  variant?: "modal" | "inline";
 }) {
   const { address, balance: nativeBalance, connect, connecting } = useWallet();
   const { openComingSoon } = useComingSoon();
@@ -41,7 +43,7 @@ export function AddLiquiditySheet({
   const [amountB, setAmountB] = useState("");
   const [selecting, setSelecting] = useState<"a" | "b" | null>(null);
 
-  if (!open) return null;
+  if (variant === "modal" && !open) return null;
 
   const balanceOf = (t: Coin) => (t.id === "native" ? parseFloat(nativeBalance ?? "0") : mockBalances[t.id] ?? 0);
 
@@ -112,98 +114,112 @@ export function AddLiquiditySheet({
     onClose();
   }
 
-  return (
-    <div className="fixed inset-0 z-[95] flex items-end justify-center" role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={handleClose} />
-      <div className="relative max-h-[88vh] w-full max-w-[560px] overflow-y-auto rounded-t-3xl border-t border-gold/25 bg-surface px-6 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-5">
+  const formContent = (
+    <>
+      {/* Token A */}
+      <div className="mt-5 rounded-2xl border border-gold/20 bg-obsidian p-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-display text-lg text-ivory">Tambah Likuiditas</h3>
-          <button onClick={handleClose} aria-label="Tutup" className="text-sage hover:text-ivory">
-            <X className="h-5 w-5" />
+          <span className="text-xs uppercase tracking-widest text-sage">Token 1</span>
+          {address && <span className="text-[11px] text-sage">Saldo: {balanceOf(tokenA).toLocaleString("en-US")}</span>}
+        </div>
+        <div className="mt-3 flex items-center gap-3">
+          <input
+            value={amountA}
+            onChange={(e) => handleAmountAChange(e.target.value)}
+            inputMode="decimal"
+            placeholder="0.0"
+            className="w-full min-w-0 bg-transparent font-display text-2xl text-ivory placeholder:text-sage/40 outline-none"
+          />
+          <button
+            onClick={() => setSelecting("a")}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-gold/30 bg-surface py-1.5 pl-1.5 pr-3 transition-colors hover:border-jade/40"
+          >
+            <CoinAvatar coin={tokenA} size={26} />
+            <span className="text-sm font-semibold text-ivory">{tokenA.symbol}</span>
+            <ChevronDown className="h-3.5 w-3.5 text-sage" />
           </button>
         </div>
-
-        {/* Token A */}
-        <div className="mt-5 rounded-2xl border border-gold/20 bg-obsidian p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs uppercase tracking-widest text-sage">Token 1</span>
-            {address && <span className="text-[11px] text-sage">Saldo: {balanceOf(tokenA).toLocaleString("en-US")}</span>}
-          </div>
-          <div className="mt-3 flex items-center gap-3">
-            <input
-              value={amountA}
-              onChange={(e) => handleAmountAChange(e.target.value)}
-              inputMode="decimal"
-              placeholder="0.0"
-              className="w-full min-w-0 bg-transparent font-display text-2xl text-ivory placeholder:text-sage/40 outline-none"
-            />
-            <button
-              onClick={() => setSelecting("a")}
-              className="flex shrink-0 items-center gap-1.5 rounded-full border border-gold/30 bg-surface py-1.5 pl-1.5 pr-3 transition-colors hover:border-jade/40"
-            >
-              <CoinAvatar coin={tokenA} size={26} />
-              <span className="text-sm font-semibold text-ivory">{tokenA.symbol}</span>
-              <ChevronDown className="h-3.5 w-3.5 text-sage" />
-            </button>
-          </div>
-        </div>
-
-        {/* Plus icon */}
-        <div className="relative z-10 -my-3 flex justify-center">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 bg-emerald-deep text-gold">
-            <Plus className="h-4 w-4" strokeWidth={2} />
-          </span>
-        </div>
-
-        {/* Token B */}
-        <div className="rounded-2xl border border-gold/20 bg-obsidian p-4 pt-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs uppercase tracking-widest text-sage">Token 2</span>
-            {address && <span className="text-[11px] text-sage">Saldo: {balanceOf(tokenB).toLocaleString("en-US")}</span>}
-          </div>
-          <div className="mt-3 flex items-center gap-3">
-            <input
-              value={amountB}
-              onChange={(e) => handleAmountBChange(e.target.value)}
-              inputMode="decimal"
-              placeholder="0.0"
-              className="w-full min-w-0 bg-transparent font-display text-2xl text-ivory placeholder:text-sage/40 outline-none"
-            />
-            <button
-              onClick={() => setSelecting("b")}
-              className="flex shrink-0 items-center gap-1.5 rounded-full border border-gold/30 bg-surface py-1.5 pl-1.5 pr-3 transition-colors hover:border-jade/40"
-            >
-              <CoinAvatar coin={tokenB} size={26} />
-              <span className="text-sm font-semibold text-ivory">{tokenB.symbol}</span>
-              <ChevronDown className="h-3.5 w-3.5 text-sage" />
-            </button>
-          </div>
-        </div>
-
-        {/* Info */}
-        <div className="mt-4 space-y-2.5 rounded-xl border border-gold/15 bg-obsidian px-4 py-3.5">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-sage">Nilai Setoran</span>
-            <span className="font-mono text-ivory">{formatPrice(depositUsd)}</span>
-          </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-sage">Estimasi Pangsa Pool</span>
-            <span className="font-mono text-ivory">{depositUsd > 0 ? `${poolShare.toFixed(3)}%` : "—"}</span>
-          </div>
-        </div>
-
-        <button
-          onClick={handleCta}
-          disabled={connecting || ctaDisabled}
-          className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-jade to-jade-bright text-sm font-semibold text-obsidian shadow-jade-glow transition-opacity hover:opacity-90 disabled:opacity-50"
-        >
-          {!address ? <WalletIcon className="h-4 w-4" strokeWidth={2} /> : <Droplets className="h-4 w-4" strokeWidth={2} />}
-          {connecting ? "Menghubungkan…" : ctaLabel}
-        </button>
-        <p className="mt-3 text-center text-[11px] leading-relaxed text-sage">
-          Data pool & rate masih contoh (mock) — akan tersambung ke kontrak likuiditas asli saat backend siap.
-        </p>
       </div>
+
+      {/* Plus icon */}
+      <div className="relative z-10 -my-3 flex justify-center">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 bg-emerald-deep text-gold">
+          <Plus className="h-4 w-4" strokeWidth={2} />
+        </span>
+      </div>
+
+      {/* Token B */}
+      <div className="rounded-2xl border border-gold/20 bg-obsidian p-4 pt-5">
+        <div className="flex items-center justify-between">
+          <span className="text-xs uppercase tracking-widest text-sage">Token 2</span>
+          {address && <span className="text-[11px] text-sage">Saldo: {balanceOf(tokenB).toLocaleString("en-US")}</span>}
+        </div>
+        <div className="mt-3 flex items-center gap-3">
+          <input
+            value={amountB}
+            onChange={(e) => handleAmountBChange(e.target.value)}
+            inputMode="decimal"
+            placeholder="0.0"
+            className="w-full min-w-0 bg-transparent font-display text-2xl text-ivory placeholder:text-sage/40 outline-none"
+          />
+          <button
+            onClick={() => setSelecting("b")}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-gold/30 bg-surface py-1.5 pl-1.5 pr-3 transition-colors hover:border-jade/40"
+          >
+            <CoinAvatar coin={tokenB} size={26} />
+            <span className="text-sm font-semibold text-ivory">{tokenB.symbol}</span>
+            <ChevronDown className="h-3.5 w-3.5 text-sage" />
+          </button>
+        </div>
+      </div>
+
+      {/* Info */}
+      <div className="mt-4 space-y-2.5 rounded-xl border border-gold/15 bg-obsidian px-4 py-3.5">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-sage">Nilai Setoran</span>
+          <span className="font-mono text-ivory">{formatPrice(depositUsd)}</span>
+        </div>
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-sage">Estimasi Pangsa Pool</span>
+          <span className="font-mono text-ivory">{depositUsd > 0 ? `${poolShare.toFixed(3)}%` : "—"}</span>
+        </div>
+      </div>
+
+      <button
+        onClick={handleCta}
+        disabled={connecting || ctaDisabled}
+        className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-jade to-jade-bright text-sm font-semibold text-obsidian shadow-jade-glow transition-opacity hover:opacity-90 disabled:opacity-50"
+      >
+        {!address ? <WalletIcon className="h-4 w-4" strokeWidth={2} /> : <Droplets className="h-4 w-4" strokeWidth={2} />}
+        {connecting ? "Menghubungkan…" : ctaLabel}
+      </button>
+      <p className="mt-3 text-center text-[11px] leading-relaxed text-sage">
+        Data pool & rate masih contoh (mock) — akan tersambung ke kontrak likuiditas asli saat backend siap.
+      </p>
+    </>
+  );
+
+  return (
+    <>
+      {variant === "inline" ? (
+        <div className="rounded-2xl border border-gold/20 bg-surface px-4 pb-5 pt-4">
+          <h3 className="font-display text-lg text-ivory">Tambah Likuiditas</h3>
+          {formContent}
+        </div>
+      ) : (
+        <div className="fixed inset-0 z-[95] flex items-end justify-center" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={handleClose} />
+          <div className="relative max-h-[88vh] w-full max-w-[560px] overflow-y-auto rounded-t-3xl border-t border-gold/25 bg-surface px-6 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-5">
+            <div className="flex items-center justify-between">
+              <h3 className="font-display text-lg text-ivory">Tambah Likuiditas</h3>
+              <button onClick={handleClose} aria-label="Tutup" className="text-sage hover:text-ivory">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            {formContent}
+          </div>
+        </div>
+      )}
 
       <TokenSelectModal
         open={selecting !== null}
@@ -213,6 +229,6 @@ export function AddLiquiditySheet({
         onSelect={handleSelect}
         onClose={() => setSelecting(null)}
       />
-    </div>
+    </>
   );
 }
