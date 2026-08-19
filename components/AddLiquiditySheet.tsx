@@ -48,10 +48,12 @@ export function AddLiquiditySheet({
   onClose,
   variant = "modal",
   onSuccess,
+  onSuccess,
 }: {
   open: boolean;
   onClose: () => void;
   variant?: "modal" | "inline";
+  onSuccess?: () => void;
   onSuccess?: () => void;
 }) {
   const { address, balance: nativeBalance, connect, connecting } = useWallet();
@@ -315,6 +317,7 @@ export function AddLiquiditySheet({
         const receipt = await tx.wait();
         setTxHash(receipt.hash);
         onSuccess?.();
+        onSuccess?.();
       } else {
         setApprovingSymbol(tokenA.symbol);
         setStage("approving");
@@ -349,6 +352,7 @@ export function AddLiquiditySheet({
         setStage("mining");
         const receipt = await tx.wait();
         setTxHash(receipt.hash);
+        onSuccess?.();
         onSuccess?.();
       }
 
