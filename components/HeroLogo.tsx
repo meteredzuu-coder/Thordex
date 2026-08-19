@@ -1,6 +1,11 @@
 export function HeroLogo() {
   return (
-    <section className="flex flex-col items-center px-6 pb-8 pt-10 text-center">
+    <section className="relative flex flex-col items-center px-6 pb-8 pt-10 text-center">
+      <span className="absolute left-4 top-3 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-jade/40 bg-jade/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-jade-bright">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-jade-bright" />
+        Live on Kryvora Network
+      </span>
+
       <div className="medallion flex h-28 w-28 items-center justify-center rounded-full shadow-gold-glow">
         <span className="font-display text-4xl italic text-ivory">T</span>
       </div>

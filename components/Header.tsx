@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Menu, Search } from "lucide-react";
 import { Drawer } from "./Drawer";
 import { SearchOverlay } from "./SearchOverlay";
+import { ConnectButton } from "./ConnectButton";
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -13,25 +14,31 @@ export function Header() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 border-b border-gold/20 bg-obsidian/90 backdrop-blur">
         <div className="mx-auto flex max-w-[560px] items-center justify-between px-4 py-3.5">
-          <button
-            aria-label="Buka menu"
-            onClick={() => setDrawerOpen(true)}
-            className="text-ivory/90 transition-colors hover:text-gold"
-          >
-            <Menu className="h-5 w-5" strokeWidth={1.75} />
-          </button>
+          <div className="flex flex-1 items-center">
+            <button
+              aria-label="Buka menu"
+              onClick={() => setDrawerOpen(true)}
+              className="text-ivory/90 transition-colors hover:text-gold"
+            >
+              <Menu className="h-5 w-5" strokeWidth={1.75} />
+            </button>
+          </div>
 
-          <span className="font-display text-[15px] tracking-[0.32em] text-ivory">
+          <span className="shrink-0 font-display text-[15px] tracking-[0.32em] text-ivory">
             THOR<span className="text-jade">DEX</span>
           </span>
 
-          <button
-            aria-label="Cari koin"
-            onClick={() => setSearchOpen(true)}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors hover:bg-emerald-deep"
-          >
-            <Search className="h-4 w-4" strokeWidth={1.75} />
-          </button>
+          <div className="flex flex-1 items-center justify-end gap-2">
+            <button
+              aria-label="Cari koin"
+              onClick={() => setSearchOpen(true)}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors hover:bg-emerald-deep"
+            >
+              <Search className="h-4 w-4" strokeWidth={1.75} />
+            </button>
+
+            <ConnectButton />
+          </div>
         </div>
       </header>
 
