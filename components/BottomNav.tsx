@@ -3,16 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, PlusCircle, Image as ImageIcon, Wallet, Droplets, Repeat } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useComingSoon } from "@/app/providers";
 
-const items = [
+type NavItem = {
+  key: string;
+  label: string;
+  href?: string;
+  icon: LucideIcon;
+};
+
+const items: NavItem[] = [
   { key: "home", label: "Home", href: "/", icon: Home },
   { key: "create-coin", label: "Create", icon: PlusCircle },
   { key: "nft", label: "NFT", icon: ImageIcon },
   { key: "wallet", label: "Wallet", icon: Wallet },
   { key: "liquidity", label: "Liquidity", icon: Droplets },
   { key: "swap", label: "Swap", icon: Repeat },
-] as const;
+];
 
 export function BottomNav() {
   const pathname = usePathname();
