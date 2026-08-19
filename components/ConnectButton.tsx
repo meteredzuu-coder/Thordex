@@ -1,46 +1,20 @@
 "use client";
 
-import { useCallback, useState } from "react";
 import { Wallet } from "lucide-react";
-import { ensureKryvoraNetwork } from "@/lib/network";
+import { useWallet } from "@/app/providers";
 
 function shortenAddress(address: string) {
   return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
 export function ConnectButton({ variant = "compact" }: { variant?: "compact" | "full" }) {
-  const [address, setAddress] = useState<string | null>(null);
-  const [connecting, setConnecting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const connect = useCallback(async () => {
-    const provider = (window as any).ethereum;
-
-    if (!provider) {
-      setError("Wallet tidak terdeteksi");
-      return;
-    }
-
-    setConnecting(true);
-    setError(null);
-
-    try {
-      const accounts: string[] = await provider.request({ method: "eth_requestAccounts" });
-      await ensureKryvoraNetwork(provider);
-      setAddress(accounts[0] ?? null);
-    } catch {
-      setError("Gagal terhubung");
-    } finally {
-      setConnecting(false);
-    }
-  }, []);
-
+  const { address, connecting, error, connect, disconnect } = useWallet();
   const isFull = variant === "full";
 
   if (address) {
     return (
       <button
-        onClick={() => setAddress(null)}
+        onClick={disconnect}
         aria-label="Wallet terhubung"
         className={
           isFull

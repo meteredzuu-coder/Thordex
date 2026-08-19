@@ -16,7 +16,7 @@ const items: NavItem[] = [
   { key: "home", label: "Home", href: "/", icon: Home },
   { key: "create-coin", label: "Create", href: "/create", icon: PlusCircle },
   { key: "nft", label: "NFT", href: "/nft", icon: ImageIcon },
-  { key: "wallet", label: "Wallet", icon: Wallet },
+  { key: "wallet", label: "Wallet", href: "/wallet", icon: Wallet },
   { key: "liquidity", label: "Liquidity", icon: Droplets },
   { key: "swap", label: "Swap", icon: Repeat },
   { key: "dexscreener", label: "Dexscreener", icon: CandlestickChart },
