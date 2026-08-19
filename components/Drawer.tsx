@@ -9,7 +9,7 @@ import { ConnectButton } from "./ConnectButton";
 const links = [
   { key: "home", label: "Home", href: "/", icon: Home },
   { key: "create-coin", label: "Create Coin", href: "/create", icon: PlusCircle },
-  { key: "nft", label: "NFT", icon: ImageIcon },
+  { key: "nft", label: "NFT", href: "/nft", icon: ImageIcon },
   { key: "wallet", label: "Wallet", icon: Wallet },
   { key: "liquidity", label: "Liquidity", icon: Droplets },
   { key: "swap", label: "Swap", icon: Repeat },
