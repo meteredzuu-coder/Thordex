@@ -64,6 +64,27 @@ git push -u origin main
 3. Vercel otomatis mendeteksi Next.js — biarkan pengaturan default, klik **Deploy**.
 4. Setelah selesai, situs bisa diakses lewat URL `*.vercel.app` yang diberikan.
 
+## Halaman Create — sudah tersambung on-chain
+
+Halaman **Create** sekarang sudah berfungsi penuh: submit form → upload gambar & metadata ke
+IPFS (via Pinata) → panggil `ThorDexTokenFactory.createToken(...)` di Kryvora Network → tampilkan
+popup sukses berisi alamat kontrak & hash transaksi (bisa disalin) plus tombol **Add Your Liquidity**.
+
+Field **Add social links** sekarang **Optional**, dan blok **Buy tokens at launch** sudah dihapus.
+Ditambahkan juga field **Initial Token Supply** (wajib diisi, dengan tombol cepat 1M/10M/100M/1B) —
+ini yang dikirim sebagai `totalSupplyTokens_` ke factory.
+
+### Environment variable yang wajib diisi di Vercel
+
+| Variabel | Wajib? | Keterangan |
+|---|---|---|
+| `PINATA_JWT` | Ya | JWT dari akun Pinata (pinata.cloud), dipakai server-side lewat `/api/ipfs/*` — jangan pakai prefix `NEXT_PUBLIC_` supaya tidak bocor ke browser. |
+| `NEXT_PUBLIC_PINATA_GATEWAY` | Opsional | Default `https://gateway.pinata.cloud/ipfs`. Isi kalau punya dedicated gateway sendiri. |
+| `NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS` | Opsional | Default sudah diisi alamat `ThorDexTokenFactory` dari README kontrak. Override kalau deploy ulang. |
+| `NEXT_PUBLIC_TREASURY_ADDRESS` | Opsional | Default sudah diisi alamat `ThorDexTreasury`. |
+
+Tanpa `PINATA_JWT`, tombol Create Token akan menampilkan pesan error saat upload gambar.
+
 ## Langkah selanjutnya
 
 - Ganti data mock di `lib/coins.ts` dan `lib/pools.ts` (harga token, saldo, TVL pool, APR)
