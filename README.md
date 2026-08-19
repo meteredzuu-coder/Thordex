@@ -85,11 +85,29 @@ ini yang dikirim sebagai `totalSupplyTokens_` ke factory.
 
 Tanpa `PINATA_JWT`, tombol Create Token akan menampilkan pesan error saat upload gambar.
 
+## Halaman Liquidity — sudah tersambung on-chain
+
+Form **Tambah Likuiditas** di halaman Liquidity sekarang memanggil `ThorDexRouter` langsung
+di Kryvora Network (`addLiquidity` untuk pasangan ERC20/ERC20, `addLiquidityETH` kalau salah
+satu sisinya native ETH). Alurnya: pilih Token 1 & Token 2 (native ETH, tempel alamat kontrak
+ERC20, atau pilih dari token yang sudah kamu buat sendiri) → approve token ke Router kalau
+allowance belum cukup → konfirmasi transaksi `addLiquidity(ETH)` → tunggu konfirmasi → link ke
+explorer. Kalau pool untuk pasangan itu belum ada, Router otomatis membuat pool baru dan rasio
+awal ditentukan dari jumlah yang dimasukkan.
+
+Karena token di `lib/coins.ts` masih data contoh (belum tentu alamat kontrak asli), daftar pool
+di bagian bawah halaman (TVL, APR, "Semua Pool"/"Posisi Saya") **masih tampilan mock** — hanya
+form Tambah Likuiditas di atas yang sungguhan on-chain.
+
+| Variabel | Wajib? | Keterangan |
+|---|---|---|
+| `NEXT_PUBLIC_ROUTER_ADDRESS` | Opsional | Default sudah diisi alamat `ThorDexRouter` dari README kontrak. Override kalau deploy ulang. |
+
 ## Langkah selanjutnya
 
 - Ganti data mock di `lib/coins.ts` dan `lib/pools.ts` (harga token, saldo, TVL pool, APR)
-  dengan data on-chain/API asli.
-- Sambungkan aksi **Swap** (di `SwapView.tsx`) dan **Tambah Likuiditas** (di
-  `AddLiquiditySheet.tsx`) ke smart contract AMM asli — saat ini keduanya masih memicu
-  popup "Segera Hadir" sebagai placeholder.
+  dengan data on-chain/API asli — perlu indexer terpisah karena kontrak tidak menyimpan
+  histori harga.
+- Sambungkan aksi **Swap** (di `SwapView.tsx`) ke `ThorDexRouter` (`swapExactTokensForTokens`,
+  `swapExactETHForTokens`, dst.) — saat ini masih memicu popup "Segera Hadir" sebagai placeholder.
 - Bangun halaman **Dexscreener** — lalu hapus pemicunya di `components/BottomNav.tsx`.

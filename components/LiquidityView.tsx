@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { pools, findToken, poolTvlTotal, myLiquidityTotal, type Pool } from "@/lib/pools";
+import { pools, findToken, poolTvlTotal, myLiquidityTotal } from "@/lib/pools";
 import { formatPrice } from "@/lib/format";
 import { KRYVORA_NETWORK } from "@/lib/network";
 import { CoinAvatar } from "./CoinAvatar";
@@ -11,7 +11,6 @@ type Tab = "all" | "mine";
 
 export function LiquidityView() {
   const [tab, setTab] = useState<Tab>("all");
-  const [activePool, setActivePool] = useState<Pool | null>(null);
 
   const visiblePools = tab === "all" ? pools : pools.filter((p) => p.myLiquidityUsd);
 
@@ -24,7 +23,7 @@ export function LiquidityView() {
         </p>
       </div>
 
-      {/* Statistik */}
+      {/* Statistik (contoh/mock — ringkasan pool asli butuh indexer terpisah) */}
       <div className="mt-5 grid grid-cols-3 gap-2">
         <div className="rounded-xl border border-gold/20 bg-surface px-2.5 py-3 text-center">
           <p className="text-[10px] uppercase tracking-wider text-sage">Total TVL</p>
@@ -40,16 +39,9 @@ export function LiquidityView() {
         </div>
       </div>
 
-      {/* Tambah Likuiditas (menyatu langsung di halaman) */}
+      {/* Tambah Likuiditas — sudah tersambung on-chain ke ThorDexRouter */}
       <div className="mt-5">
-        <AddLiquiditySheet
-          open
-          variant="inline"
-          tokenAId="native"
-          tokenBId="thor"
-          poolTvl={0}
-          onClose={() => {}}
-        />
+        <AddLiquiditySheet open variant="inline" onClose={() => {}} />
       </div>
 
       {/* Tabs */}
@@ -72,7 +64,7 @@ export function LiquidityView() {
         </button>
       </div>
 
-      {/* Daftar pool */}
+      {/* Daftar pool (contoh/mock, tampilan saja) */}
       <div className="mt-4">
         {visiblePools.length === 0 ? (
           <div className="rounded-2xl border border-gold/15 bg-surface px-4 py-8 text-center text-xs text-sage">
@@ -84,10 +76,9 @@ export function LiquidityView() {
               const tokenA = findToken(pool.tokenAId);
               const tokenB = findToken(pool.tokenBId);
               return (
-                <button
+                <div
                   key={pool.id}
-                  onClick={() => setActivePool(pool)}
-                  className={`flex w-full items-center gap-3 bg-surface px-4 py-3.5 text-left transition-colors hover:bg-surface2 ${
+                  className={`flex w-full items-center gap-3 bg-surface px-4 py-3.5 ${
                     i === visiblePools.length - 1 ? "" : "border-b border-gold/10"
                   }`}
                 >
@@ -109,25 +100,16 @@ export function LiquidityView() {
                       <p className="mt-1 font-mono text-[11px] text-sage">Anda: {formatPrice(pool.myLiquidityUsd)}</p>
                     )}
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
         )}
         <p className="mt-3 px-1 text-[11px] leading-relaxed text-sage">
-          Data pool masih contoh (mock) — akan tersambung ke likuiditas on-chain asli saat backend siap.
+          Daftar pool di atas masih data contoh (mock) untuk tampilan. Gunakan formulir Tambah
+          Likuiditas di atas untuk berinteraksi dengan pool on-chain yang sesungguhnya.
         </p>
       </div>
-
-      {activePool && (
-        <AddLiquiditySheet
-          open
-          tokenAId={activePool.tokenAId}
-          tokenBId={activePool.tokenBId}
-          poolTvl={activePool.tvl}
-          onClose={() => setActivePool(null)}
-        />
-      )}
     </div>
   );
 }

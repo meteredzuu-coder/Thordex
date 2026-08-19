@@ -14,6 +14,11 @@ export const AMM_FACTORY_ADDRESS =
 export const WKRY_ADDRESS =
   process.env.NEXT_PUBLIC_WKRY_ADDRESS ?? "0x510b39d03dE1DEB8cf91D67c6AFE46b44661F74D";
 
+export const ROUTER_ADDRESS =
+  process.env.NEXT_PUBLIC_ROUTER_ADDRESS ?? "0xa4cC2d619496272f8a118aC2feF2b7820a315963";
+
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+
 export { KRYVORA_NETWORK };
 
 // ABI minimal ThorDexTokenFactory — hanya yang dipakai frontend (create + baca fee).
@@ -36,10 +41,21 @@ export const PAIR_ABI = [
   "function getReserves() view returns (uint256 reserve0, uint256 reserve1)",
 ] as const;
 
-// ABI ERC20 minimal — dipakai untuk baca name/symbol token yang sudah dideploy user.
+// ABI ERC20 minimal — dipakai untuk baca name/symbol token yang sudah dideploy user,
+// plus decimals/balanceOf/allowance/approve yang dibutuhkan alur Tambah Likuiditas.
 export const ERC20_MIN_ABI = [
   "function name() view returns (string)",
   "function symbol() view returns (string)",
+  "function decimals() view returns (uint8)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function allowance(address owner, address spender) view returns (uint256)",
+  "function approve(address spender, uint256 amount) returns (bool)",
+] as const;
+
+// ABI minimal ThorDexRouter — dipakai untuk Tambah Likuiditas on-chain.
+export const ROUTER_ABI = [
+  "function addLiquidity(address tokenA, address tokenB, uint256 amountADesired, uint256 amountBDesired, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) returns (uint256 amountA, uint256 amountB, uint256 liquidity)",
+  "function addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) payable returns (uint256 amountToken, uint256 amountETH, uint256 liquidity)",
 ] as const;
 
 export function explorerTxUrl(hash: string) {
