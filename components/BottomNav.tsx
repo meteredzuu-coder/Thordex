@@ -5,7 +5,14 @@ import { usePathname } from "next/navigation";
 import { Home, PlusCircle, Image as ImageIcon, Wallet, Droplets, Repeat, CandlestickChart } from "lucide-react";
 import { useComingSoon } from "@/app/providers";
 
-const items = [
+type NavItem = {
+  key: string;
+  label: string;
+  href?: string;
+  icon: typeof Home;
+};
+
+const items: NavItem[] = [
   { key: "home", label: "Home", href: "/", icon: Home },
   { key: "create-coin", label: "Create", icon: PlusCircle },
   { key: "nft", label: "NFT", icon: ImageIcon },
@@ -13,7 +20,7 @@ const items = [
   { key: "liquidity", label: "Liquidity", icon: Droplets },
   { key: "swap", label: "Swap", icon: Repeat },
   { key: "dexscreener", label: "Dexscreener", icon: CandlestickChart },
-] as const;
+];
 
 export function BottomNav() {
   const pathname = usePathname();
