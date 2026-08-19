@@ -6,8 +6,12 @@ export function HeroLogo() {
         Live on Kryvora Network
       </span>
 
-      <div className="medallion flex h-28 w-28 items-center justify-center rounded-full shadow-gold-glow">
-        <span className="font-display text-4xl italic text-ivory">T</span>
+      <div className="medallion flex h-28 w-28 items-center justify-center overflow-hidden rounded-full shadow-gold-glow">
+        <img
+          src="https://magenta-advisory-cardinal-566.mypinata.cloud/ipfs/bafybeidjzga3axioyma6xecfz2qu6mrsmn4gkqhtvej7kl4hbvwz3tppii"
+          alt="Thordex"
+          className="h-full w-full object-cover"
+        />
       </div>
       <h1 className="mt-5 font-display text-2xl tracking-[0.08em] text-ivory">
         THOR<span className="text-jade">DEX</span>
