@@ -10,7 +10,7 @@ export function HeroLogo() {
         <img
           src="https://magenta-advisory-cardinal-566.mypinata.cloud/ipfs/bafybeigftehawcozcui6rgynswu4qe22cao6xkaa4uhewsyvgeva5ezlym"
           alt="Thordex"
-          className="h-full w-full scale-[1.15] object-cover"
+          className="h-full w-full object-contain"
         />
       </div>
       <h1 className="mt-5 font-display text-2xl tracking-[0.08em] text-ivory">

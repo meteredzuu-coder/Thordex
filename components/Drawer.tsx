@@ -31,7 +31,7 @@ export function Drawer({ open, onClose }: { open: boolean; onClose: () => void }
               <img
                 src="https://magenta-advisory-cardinal-566.mypinata.cloud/ipfs/bafybeigftehawcozcui6rgynswu4qe22cao6xkaa4uhewsyvgeva5ezlym"
                 alt="Thordex"
-                className="h-full w-full scale-[1.15] object-cover"
+                className="h-full w-full object-contain"
               />
             </span>
             <span className="font-display text-sm tracking-[0.18em] text-ivory">
