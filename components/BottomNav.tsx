@@ -19,7 +19,7 @@ const items: NavItem[] = [
   { key: "wallet", label: "Wallet", href: "/wallet", icon: Wallet },
   { key: "liquidity", label: "Liquidity", href: "/liquidity", icon: Droplets },
   { key: "swap", label: "Swap", href: "/swap", icon: Repeat },
-  { key: "dexscreener", label: "Dexscreener", icon: CandlestickChart },
+  { key: "dexscreener", label: "Dexscreener", href: "/dexscreener", icon: CandlestickChart },
 ];
 
 export function BottomNav() {
