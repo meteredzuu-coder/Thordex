@@ -38,11 +38,14 @@ export function useWallet() {
 }
 
 // Ubah saldo hex (wei) dari provider menjadi string ETH yang mudah dibaca.
+// Pakai BigInt() sebagai fungsi (bukan literal 123n) karena target TS project ini ES2017.
+const WEI_PER_ETH = BigInt("1000000000000000000");
+
 function weiHexToEth(hexWei: string): string {
   try {
     const wei = BigInt(hexWei);
-    const whole = wei / 1_000_000_000_000_000_000n;
-    const frac = wei % 1_000_000_000_000_000_000n;
+    const whole = wei / WEI_PER_ETH;
+    const frac = wei % WEI_PER_ETH;
     const fracStr = frac.toString().padStart(18, "0").slice(0, 4);
     return `${whole}.${fracStr}`;
   } catch {
