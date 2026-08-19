@@ -8,7 +8,7 @@ export function TopCoinInfo() {
 
   return (
     <section className="mb-9">
-      <SectionHeading>Top Coin Info</SectionHeading>
+      <SectionHeading>Top Coin</SectionHeading>
       <div className="mx-6 rounded-2xl border border-gold/25 bg-surface p-5 shadow-jade-glow">
         <div className="flex items-center gap-4">
           <CoinAvatar coin={topCoin} size={52} />

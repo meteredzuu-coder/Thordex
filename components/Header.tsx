@@ -14,7 +14,7 @@ export function Header() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 border-b border-gold/20 bg-obsidian/90 backdrop-blur">
         <div className="mx-auto flex max-w-[560px] items-center justify-between px-4 py-3.5">
-          <div className="flex flex-1 items-center">
+          <div className="flex flex-1 items-center gap-3">
             <button
               aria-label="Buka menu"
               onClick={() => setDrawerOpen(true)}
@@ -22,13 +22,13 @@ export function Header() {
             >
               <Menu className="h-5 w-5" strokeWidth={1.75} />
             </button>
+
+            <span className="shrink-0 font-display text-[15px] tracking-[0.32em] text-ivory">
+              THOR<span className="text-jade">DEX</span>
+            </span>
           </div>
 
-          <span className="shrink-0 font-display text-[15px] tracking-[0.32em] text-ivory">
-            THOR<span className="text-jade">DEX</span>
-          </span>
-
-          <div className="flex flex-1 items-center justify-end gap-2">
+          <div className="flex items-center justify-end gap-2">
             <button
               aria-label="Cari koin"
               onClick={() => setSearchOpen(true)}
