@@ -29,16 +29,22 @@ export const TOKEN_FACTORY_ABI = [
   "event TokenCreated(address indexed token, address indexed creator, string name, string symbol, uint256 totalSupply, string metadataURI)",
 ] as const;
 
-// ABI minimal ThorDexAMMFactory — dipakai untuk cek apakah sebuah token sudah punya pool (pair) vs WKRY.
+// ABI minimal ThorDexAMMFactory — dipakai untuk cek apakah sebuah token sudah punya pool (pair) vs WKRY,
+// dan untuk enumerasi semua pool yang pernah dibuat (dipakai halaman Liquidity).
 export const AMM_FACTORY_ABI = [
   "function getPair(address tokenA, address tokenB) view returns (address pair)",
+  "function allPairsLength() view returns (uint256)",
+  "function allPairs(uint256 index) view returns (address pair)",
 ] as const;
 
-// ABI minimal ThorDexPair — dipakai untuk baca reserve (jumlah liquidity) sebuah pool.
+// ABI minimal ThorDexPair — dipakai untuk baca reserve (jumlah liquidity) sebuah pool,
+// serta totalSupply/balanceOf LP token untuk menghitung posisi likuiditas milik user.
 export const PAIR_ABI = [
   "function token0() view returns (address)",
   "function token1() view returns (address)",
   "function getReserves() view returns (uint256 reserve0, uint256 reserve1)",
+  "function totalSupply() view returns (uint256)",
+  "function balanceOf(address account) view returns (uint256)",
 ] as const;
 
 // ABI ERC20 minimal — dipakai untuk baca name/symbol token yang sudah dideploy user,
