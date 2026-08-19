@@ -19,8 +19,23 @@ harga/persentase.
 - Daftar Koin: list koin, tiap baris bisa diklik
 - Bottom navigation: Home, Create Coin, NFT, Wallet, Liquidity, Swap
 
-Menu selain **Home** (baik di bottom nav maupun menu samping) dan klik pada baris koin
-akan menampilkan popup **"Segera Hadir"** — karena halaman-halaman tersebut belum dibangun.
+Menu **Create Coin**, **NFT**, **Wallet**, **Liquidity**, dan **Swap** sudah punya halaman sendiri.
+Menu **Dexscreener** dan klik pada baris koin di Home masih menampilkan popup **"Segera Hadir"**
+karena belum dibangun.
+
+## Struktur halaman Swap
+
+- Kartu "Anda Bayar" dan "Anda Terima" dengan pemilih token (bottom sheet pencarian token)
+- Tombol balik arah swap, kalkulasi rate & jumlah diterima otomatis dari harga mock di `lib/pools.ts`
+- Info rate, biaya swap, slippage tolerance (pilihan 0.1% / 0.5% / 1%), dan minimum diterima
+- Tombol Connect Wallet bila belum terhubung; aksi Swap masih memicu popup "Segera Hadir"
+
+## Struktur halaman Liquidity
+
+- Ringkasan statistik: Total TVL, jumlah pool, dan total posisi milik user (data mock)
+- Tab "Semua Pool" / "Posisi Saya", daftar pool dengan TVL & APR (data mock di `lib/pools.ts`)
+- Ketuk pool atau tombol "+" untuk membuka bottom sheet **Tambah Likuiditas** (dua input token
+  dengan rasio otomatis, estimasi pangsa pool); aksi submit masih memicu popup "Segera Hadir"
 
 ## Menjalankan di lokal
 
@@ -51,7 +66,9 @@ git push -u origin main
 
 ## Langkah selanjutnya
 
-- Ganti data mock di `lib/coins.ts` dengan data on-chain/API asli.
-- Bangun halaman untuk Create Coin, NFT, Wallet, Liquidity, dan Swap — lalu hapus
-  pemicu popup "Segera Hadir" untuk masing-masing di `components/BottomNav.tsx` dan
-  `components/Drawer.tsx`, arahkan ke route barunya.
+- Ganti data mock di `lib/coins.ts` dan `lib/pools.ts` (harga token, saldo, TVL pool, APR)
+  dengan data on-chain/API asli.
+- Sambungkan aksi **Swap** (di `SwapView.tsx`) dan **Tambah Likuiditas** (di
+  `AddLiquiditySheet.tsx`) ke smart contract AMM asli — saat ini keduanya masih memicu
+  popup "Segera Hadir" sebagai placeholder.
+- Bangun halaman **Dexscreener** — lalu hapus pemicunya di `components/BottomNav.tsx`.
